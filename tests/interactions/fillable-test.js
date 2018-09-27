@@ -60,21 +60,6 @@ describe('BigTest Interaction: fillable', () => {
     expect(events).to.have.members(['input', 'change']);
   });
 
-  it('contains the value in the fired change event', async () => {
-    let changeEvent;
-    await expect(test.fill('.test-input', '').run()).to.be.fulfilled;
-    changeEvent = eventObjects.find(e => e.type === 'change');
-
-    expect(changeEvent.target.value).to.equal('');
-
-    eventObjects = [];
-    await expect(test.fillInput('some value').run()).to.be.fulfilled;
-
-    changeEvent = eventObjects.find(e => e.type === 'change');
-
-    expect(changeEvent.target.value).to.equal('some value');
-  });
-
   describe('overwriting the default fill method', () => {
     beforeEach(() => {
       test = new (interactor(function() {
