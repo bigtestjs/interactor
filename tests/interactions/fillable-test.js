@@ -8,15 +8,25 @@ const FillInteractor = interactor(function() {
 });
 
 describe('BigTest Interaction: fillable', () => {
-  let test, $input, events;
+  let test, $input, events, eventObjects;
 
   useFixture('input-fixture');
 
   beforeEach(() => {
     events = [];
+    eventObjects = [];
     $input = document.querySelector('.test-input');
-    $input.addEventListener('input', () => events.push('input'));
-    $input.addEventListener('change', () => events.push('change'));
+
+    $input.addEventListener('input', (e) => {
+      events.push('input');
+      eventObjects.push(e);
+    });
+
+    $input.addEventListener('change', (e) => {
+      events.push('change');
+      eventObjects.push(e);
+    });
+
     test = new FillInteractor();
   });
 
