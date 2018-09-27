@@ -8,15 +8,25 @@ const FillInteractor = interactor(function() {
 });
 
 describe('BigTest Interaction: fillable', () => {
-  let test, $input, events;
+  let test, $input, events, eventObjects;
 
   useFixture('input-fixture');
 
   beforeEach(() => {
     events = [];
+    eventObjects = [];
     $input = document.querySelector('.test-input');
-    $input.addEventListener('input', () => events.push('input'));
-    $input.addEventListener('change', () => events.push('change'));
+
+    $input.addEventListener('input', (e) => {
+      events.push('input');
+      eventObjects.push(e);
+    });
+
+    $input.addEventListener('change', (e) => {
+      events.push('change');
+      eventObjects.push(e);
+    });
+
     test = new FillInteractor();
   });
 
@@ -48,6 +58,21 @@ describe('BigTest Interaction: fillable', () => {
     events = [];
     await expect(test.fillInput('').run()).to.be.fulfilled;
     expect(events).to.have.members(['input', 'change']);
+  });
+
+  it('contains the value in the fired change event', async () => {
+    let changeEvent;
+    await expect(test.fill('.test-input', '').run()).to.be.fulfilled;
+    changeEvent = eventObjects.find(e => e.type === 'change');
+
+    expect(changeEvent.target.value).to.equal('');
+
+    eventObjects = [];
+    await expect(test.fillInput('some value').run()).to.be.fulfilled;
+
+    changeEvent = eventObjects.find(e => e.type === 'change');
+
+    expect(changeEvent.target.value).to.equal('some value');
   });
 
   describe('overwriting the default fill method', () => {

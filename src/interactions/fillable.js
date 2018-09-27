@@ -53,8 +53,7 @@ export function fill(selectorOrValue, value) {
       $node.dispatchEvent(
         new Event('input', {
           bubbles: true,
-          cancelable: true,
-          value
+          cancelable: true
         })
       );
 
@@ -62,8 +61,7 @@ export function fill(selectorOrValue, value) {
       $node.dispatchEvent(
         new Event('change', {
           bubbles: true,
-          cancelable: true,
-          value
+          cancelable: true
         })
       );
 
