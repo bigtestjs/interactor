@@ -1,5 +1,4 @@
 /* global describe, beforeEach, it */
-
 import { expect } from 'chai';
 import { useFixture } from '../helpers';
 import { interactor, selectable } from '../../src';
@@ -122,6 +121,15 @@ describe('BigTest Interaction: selectable', () => {
       expect($select.selectedOptions.length).to.equal(2);
       expect($select.selectedOptions[0].text).to.equal('Option 1');
       expect($select.selectedOptions[1].text).to.equal('Option 2');
+    });
+
+    it('throws an error when trying to select an option that does not exist', async () => {
+      await expect(
+        test
+          .timeout(50)
+          .selectOption(['Option 1', 'Race car'])
+          .run()
+      ).to.be.rejectedWith('unable to find option "Race car"');
     });
   });
 });
