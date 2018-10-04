@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
-- call the elements `focus` method inside of `focusable`
+
+### Fixed
+
+- call the elements `focus` method inside of `focusable` to set focus
 
 ## [0.7.2] - 2018-07-23
 
