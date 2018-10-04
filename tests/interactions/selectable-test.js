@@ -8,10 +8,6 @@ const SelectInteractor = interactor(function() {
   this.selectOption = selectable('.test-select');
 });
 
-const getSelectedOptions = $select => {
-  return [...$select.options].filter(option => option.selected).map(option => option.value);
-};
-
 describe('BigTest Interaction: selectable', () => {
   let test, $select, events;
 
@@ -65,6 +61,12 @@ describe('BigTest Interaction: selectable', () => {
       ).to.be.rejectedWith('unable to find option "nothing"');
     });
 
+    it('can not pass multiple options', async () => {
+      await expect(test.select('.test-select', ['Option 1', 'Option 2']).run()).to.be.rejectedWith(
+        'unable to select more than one option for ".test-select"'
+      );
+    });
+
     describe('overwriting the default select method', () => {
       beforeEach(() => {
         test = new (interactor(function() {
@@ -88,12 +90,38 @@ describe('BigTest Interaction: selectable', () => {
     });
 
     it('can deselect currently selected options', async () => {
-      await expect(test.select('.test-select', 'Option 1').run()).to.be.fulfilled;
-      await expect(test.select('.test-select', 'Option 2').run()).to.be.fulfilled;
-      expect(getSelectedOptions($select)).to.eql(['1', '2']);
+      await expect(test.select('.test-select', ['Option 1', 'Option 2']).run()).to.be.fulfilled;
+      expect($select.selectedOptions.length).to.equal(2);
+      expect($select.selectedOptions[0].text).to.equal('Option 1');
+      expect($select.selectedOptions[1].text).to.equal('Option 2');
 
       await expect(test.selectOption('Option 2').run()).to.be.fulfilled;
-      expect(getSelectedOptions($select)).to.eql(['1']);
+      expect($select.selectedOptions.length).to.equal(1);
+      expect($select.selectedOptions[0].text).to.equal('Option 1');
+    });
+
+    it('can deselect all options', async () => {
+      await expect(test.select('.test-select', ['Option 1', 'Option 2']).run()).to.be.fulfilled;
+      expect($select.selectedOptions.length).to.equal(2);
+      expect($select.selectedOptions[0].text).to.equal('Option 1');
+      expect($select.selectedOptions[1].text).to.equal('Option 2');
+
+      await expect(test.select('.test-select', ['Option 1', 'Option 2']).run()).to.be.fulfilled;
+      expect($select.selectedOptions.length).to.equal(0);
+    });
+
+    it('can pass multiple options to be selected', async () => {
+      await expect(test.select('.test-select', ['Option 1', 'Option 2']).run()).to.be.fulfilled;
+      expect($select.selectedOptions.length).to.equal(2);
+      expect($select.selectedOptions[0].text).to.equal('Option 1');
+      expect($select.selectedOptions[1].text).to.equal('Option 2');
+    });
+
+    it('can pass multiple options to be selected on a custom element', async () => {
+      await expect(test.selectOption(['Option 1', 'Option 2']).run()).to.be.fulfilled;
+      expect($select.selectedOptions.length).to.equal(2);
+      expect($select.selectedOptions[0].text).to.equal('Option 1');
+      expect($select.selectedOptions[1].text).to.equal('Option 2');
     });
   });
 });
