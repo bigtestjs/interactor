@@ -60,13 +60,20 @@ export function select(selectorOrOption, options) {
     selector = selectorOrOption;
   }
 
+  // turn options into an array
+  options = [].concat(options);
+
   return find
     .call(this, selector)
     .when($select => {
+      if (!$select.multiple && options.length > 1) {
+        throw new Error(`unable to select more than one option for "${selector}"`);
+      }
+
       // find the option by text content
       return [
         $select,
-        [].concat(options).map(option => {
+        options.map(option => {
           for (let $option of $select.options) {
             if ($option.text === option) {
               return $option;
@@ -78,10 +85,6 @@ export function select(selectorOrOption, options) {
       ];
     })
     .do(([$select, $options]) => {
-      if (!$select.multiple && $options.length > 1) {
-        throw new Error(`unable to select more than one option for "${selector}"`);
-      }
-
       if ($select.multiple) {
         $options.forEach(option => {
           // since multiple selects can toggle selection, we'll toggle

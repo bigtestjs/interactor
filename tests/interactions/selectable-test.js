@@ -61,9 +61,12 @@ describe('BigTest Interaction: selectable', () => {
     });
 
     it('can not pass multiple options', async () => {
-      await expect(test.select('.test-select', ['Option 1', 'Option 2']).run()).to.be.rejectedWith(
-        'unable to select more than one option for ".test-select"'
-      );
+      await expect(
+        test
+          .timeout(50)
+          .select('.test-select', ['Option 1', 'Option 2'])
+          .run()
+      ).to.be.rejectedWith('unable to select more than one option for ".test-select"');
     });
 
     describe('overwriting the default select method', () => {
