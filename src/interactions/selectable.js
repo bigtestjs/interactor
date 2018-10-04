@@ -40,8 +40,9 @@ export function select(selectorOrOption, option) {
     selector = selectorOrOption;
   }
 
-  return find.call(this, selector)
-    .when(($select) => {
+  return find
+    .call(this, selector)
+    .when($select => {
       // find the option by text content
       for (let $option of $select.options) {
         if ($option.text === option) {
@@ -52,8 +53,13 @@ export function select(selectorOrOption, option) {
       throw new Error(`unable to find option "${option}"`);
     })
     .do(([$select, $option]) => {
-      // select the option
-      $option.selected = true;
+      if ($select.multiple && $option.selected) {
+        // toggle the option to not be selected
+        $option.selected = false;
+      } else {
+        // select the option
+        $option.selected = true;
+      }
 
       // dispatch input event
       $select.dispatchEvent(
