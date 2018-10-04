@@ -15,8 +15,11 @@ describe('BigTest Interaction: focusable', () => {
   beforeEach(() => {
     focused = false;
 
-    document.querySelector('.test-input')
-      .addEventListener('focus', () => focused = true);
+    document.querySelector('.test-input').addEventListener('focus', () => {
+      if (document.querySelector('.test-input') === document.activeElement) {
+        focused = true;
+      }
+    });
 
     test = new FocusInteractor();
   });
