@@ -26,6 +26,7 @@ export function focus(selector) {
   return find.call(this, selector)
     .do(($node) => {
       $node.focus();
+
       $node.dispatchEvent(
         new Event('focus', {
           bubbles: true,
