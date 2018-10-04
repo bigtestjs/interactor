@@ -41,14 +41,7 @@ import { find } from './find';
  *
  * ``` javascript
  * await new Interactor('select').select(['February', 'March'])
- *
- * // or with a custom interactor
- * \@interactor class CustomInteractor {
- *   selectOption = selectable();
- * }
- *
- * let select = new CustomInteractor('#month');
- * select.selectOption(['February', 'March']);
+ * await new Interactor('form').select('select#month', ['February', 'March'])
  * ```
  *
  * @method Interactor#select
@@ -142,6 +135,31 @@ export function select(selectorOrOption, options) {
  *
  * ``` javascript
  * await new FormInteractor('form').selectMonth('February')
+ * ```
+ *
+ * For multiple selects you can pass an array of options you would
+ * like to select.
+ *
+ * ``` html
+ * <form ...>
+ *   <select id="month" multiple>
+ *     <option value="1">January</option>
+ *     <option value="2">February</option>
+ *     <option value="3">March</option>
+ *     ...
+ *   </select>
+ *   ...
+ * </form>
+ * ```
+ *
+ * ``` javascript
+ * \@interactor class FormInteractor {
+ *   selectMonth = selectable('select#month')
+ * }
+ * ```
+ *
+ * ``` javascript
+ * await new FormInteractor('form').selectMonth(['February', 'March']);
  * ```
  *
  * @function selectable
