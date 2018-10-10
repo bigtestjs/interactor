@@ -28,7 +28,7 @@ export function find(selector) {
  * ```
  *
  * ``` javascript
- * let $heading = await new PageInteractor().heading;
+ * let $heading = new PageInteractor().heading;
  * ```
  *
  * @function find

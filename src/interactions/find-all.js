@@ -30,7 +30,7 @@ export function findAll(selector) {
  * ```
  *
  * ``` javascript
- * let $listItems = await new ListInteractor('ul').items;
+ * let $listItems = new ListInteractor('ul').items;
  * ```
  *
  * @function findAll
