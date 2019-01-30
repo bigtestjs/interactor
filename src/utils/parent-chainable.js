@@ -33,7 +33,8 @@ function isSameType(a, b) {
 function chainable(fn) {
   return function(...args) {
     // use an instance with no parent to prevent upwards reflection
-    let results = fn.apply(this.only(), args);
+    let target = this.only ? this.only() : this;
+    let results = fn.apply(target, args);
 
     // return orphaned children to their parent
     if (isSameType(this, results && results.__parent__)) {
