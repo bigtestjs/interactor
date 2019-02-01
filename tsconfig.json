@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "baseUrl": "./",
+    "typeRoots": ["./types"],
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": []
+  },
+  "include": [
+    "src"
+  ],
+  "files": ["types/index.d.ts", "tests/definition-test.ts"]
+}
