@@ -66,6 +66,14 @@ jobs:
           name: Run tests
           command: yarn test --browser chrome
 
+  test:
+    <<: *defaults
+    steps:
+      - *attach_workspace
+      - run:
+          name: Check TypeScript type definition
+          command: yarn check-types
+
   deploy:
     <<: *defaults
     steps:
