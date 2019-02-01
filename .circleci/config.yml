@@ -101,6 +101,9 @@ workflows:
       - test:
           requires:
             - install
+      - check-types:
+          requires:
+            - install
       - deploy:
           requires:
             - lint
