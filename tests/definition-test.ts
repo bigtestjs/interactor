@@ -8,7 +8,7 @@ import Interactor, {
   property,
   hasClass,
   is,
-  // interactor
+  interactor
 } from "@bigtest/interactor";
 
 text();
@@ -64,30 +64,15 @@ i.scroll({ left: 20 }).then()
 i.scroll({ top: 20 }).click().fill('hello').then()
 i.scroll('.hello-world', { left: 20 }).then()
 
-interface Constructor<T extends {} = {}> {
-  new(): T
-}
-
-interface InteractorConstructor<T extends {} = {}> {
-  new(scope?: string): T
-}
-
-function interactor<T extends {} = {}>(target: Constructor<T>): InteractorConstructor<T> {
-  return class extends target {
-    constructor(scope?: string) {
-      super()
-    }
-  } as InteractorConstructor<T>
-}
 
 class Person {
   name = attribute("name")
   isRendered = isVisible()
 }
 
-let P2 = interactor(Person)
+let PersonInteractor = interactor(Person)
 
-let person = new P2('.person-on-left');
+let person = new PersonInteractor('.person-on-left');
 
 person.name
 person.isRendered

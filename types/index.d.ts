@@ -124,7 +124,7 @@ declare module '@bigtest/interactor' {
   /**
    * Turn a class into an Interactor
    */
-  export const interactor: ;
+  export function interactor<T>(constructor: T): InteractorConstructor<T>
 
   /**
    * Returns the trimmed textContent property of an element.
@@ -192,10 +192,9 @@ declare module '@bigtest/interactor' {
     cancelable?: boolean;
   }
 
-  interface InteractorConstructor {
-    constructor(selector: string): Interactor
-    prototype: any
-    new(scope?: string): any
+  interface InteractorConstructor<T> {
+    new(selector?: string): InteractorConstructor<T>
+    prototype: T
   }
 
   // type Interactors = {
