@@ -1,167 +1,208 @@
-
 // Type definitions for @bigtest
-// Project: https://github.com/bigtest
+// Project: https://github.com/bigtestjs/interactor
 // Definitions by: Taras Mankovski <taras@frontside.io>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-declare module "@bigtest/interactor" {
+declare module '@bigtest/interactor' {
+  import Convergence from '@bigtest/convergence';
+
+  export default class Interactor extends Convergence {
+    constructor(scope?: string);
+
+    /**
+     * Parent of this interactor
+     */
+    $root: HTMLElement | null;
+
+    /**
+     * Returns the trimmed textContent property of an element.
+     */
+    text: string;
+
+    /**
+     * Returns the value property of an element.
+     */
+    value: string;
+
+    /**
+     * Returns `true` or `false` if an element is visible in the document.
+     */
+    isVisible: boolean;
+
+    /**
+     * Returns `true` or `false` if an element exists in the document but is visually hidden.
+     */
+    isHidden: boolean;
+
+    /**
+     * Returns `true` or `false` if an element can be found within the document.
+     */
+    isPresent: boolean;
+
+    /**
+     * First element matching a selector of this interactor.
+     */
+    $: HTMLElement | null;
+
+    /**
+     * All elements matching a selector of this interactor.
+     */
+    $$: HTMLElement[];
+
+    /**
+     * Triggers a `click` event on an element.
+     * @param selector
+     * @returns Promise
+     */
+    click(selector?: string): Interactor;
+
+    /**
+     * Changes the `value` of an element and triggers `input` and `change` events.
+     * @param value
+     * @returns Promise
+     */
+    fill(value: any): Interactor;
+    fill(selector: string, value: any): Interactor;
+
+    /**
+     * Selects an option by it's `text` value and triggers `input` and `change` events.
+     * @param option
+     * @returns Promise
+     */
+    select(option: string): Interactor;
+    select(selector: string, option: string): Interactor;
+
+    /**
+     * Triggers a `focus` event on an element.
+     * @param selector
+     */
+    focus(selector?: string): Interactor;
+
+    /**
+     * Triggers a `blur` event on an element.
+     * @param selector
+     */
+    blur(selector?: string): Interactor;
+
+    /**
+     * Sets an element's `scrollTop` and `scrollLeft` properties and triggers a `scroll` event. The `top`
+     * and `left` values specify how many pixels in that direction to scroll to; at least one direction
+     * must be specified.
+     * @param param0
+     */
+    scroll({ top, left }: ScrollOffset): Interactor;
+    scroll(selector: string, { top, left }: ScrollOffset): Interactor;
+
+    /**
+     * Triggers an arbitrary event, `name`, on an element with any specified event `options`. By default,
+     * the `bubbles` and `cancelable` options are set to `true`.
+     * @param name
+     */
+    trigger(name: string, options?: EventOptions): Interactor;
+    trigger(selector: string, name: string, options?: EventOptions): Interactor;
+
+    /**
+     * Create a custom interactor class from methods and properties of
+     * another class.
+     * */
+    // static extend<U>(interactors: Interactors): Composed<typeof Interactor>
+
+    /**
+     * Creates a custom interactor class from methods and properties of an
+     * object. Methods and getters are added to the custom class's
+     * prototype and all other properties are defined during instance
+     * initialization to support custom property creators.
+     */
+    // static from(interactors: Interactors): Composed<keyof T>
+
+    /**
+     * Returns `true` if the object is an interactor.
+     */
+    static isInteractor(obj: any): boolean;
+  }
+
+  /**
+   * Turn a class into an Interactor
+   */
+  export const interactor: ;
+
+  /**
+   * Returns the trimmed textContent property of an element.
+   * @param selector
+   */
+  export function text(selector?: string): string;
+
+  /**
+   * Returns the value property of an element.
+   * @param selector
+   */
+  export function value(selector?: string): string | number;
+
+  /**
+   * Returns `true` or `false` if an element is visible in the document.
+   * @param selector
+   */
+  export function isVisible(selector?: string): boolean;
+
+  /**
+   * Returns `true` or `false` if an element exists in the document but is visually hidden.
+   * @param selector
+   */
+  export function isHidden(selector?: string): boolean;
+
+  /**
+   * Returns `true` or `false` if an element can be found within the document.
+   */
+  export function isPresent(selector?: string): boolean;
+
+  /**
+   * Returns the specified attribute of an element via `getAttribute`.
+   */
+  export function attribute(attr: string): string | null;
+  export function attribute(selector: string, attr: string): string | null;
+
+  /**
+   * Returns the specified property value of an element.
+   * @param prop
+   */
+  export function property<T = any>(prop: string): T;
+  export function property<T = any>(selector: string, prop: string): T;
+
+  /**
+   * Returns `true` or `false` if an element's `classList` contains the specified classname.
+   * @param className
+   */
+  export function hasClass(className: string): boolean;
+  export function hasClass(selector: string, className: string): boolean;
+
+  /**
+   * Returns `true` or `false` if an element can be selected by the specified matching selector
+   * via Element.matches().
+   */
+  export function is(match: string): boolean;
+  export function is(selector: string, match: string): boolean;
+
   interface ScrollOffset {
     top?: number;
     left?: number;
   }
 
   interface EventOptions {
-    bubbles?: boolean
-    cancelable?: boolean
+    bubbles?: boolean;
+    cancelable?: boolean;
   }
 
-  type Chainable = Interactor & Promise<void>
-
-  interface Interactor {
-    new(): Interactor
-    
-    /**
-     * Returns the trimmed textContent property of an element.
-     */
-    text: string
-
-    /**
-     * Returns the value property of an element.
-     */
-    value: any
-
-    /**
-     * Returns `true` or `false` if an element is visible in the document.
-     */
-    isVisible: boolean
-
-    /**
-     * Returns `true` or `false` if an element exists in the document but is visually hidden.
-     */
-    isHidden: boolean
-
-    /**
-     * Returns `true` or `false` if an element can be found within the document.
-     */
-    isPresent: boolean
-
-    /**
-     * Triggers a `click` event on an element.
-     * @param selector 
-     * @returns Promise
-     */
-    click(selector?: string): Chainable
-
-    /**
-     * Changes the `value` of an element and triggers `input` and `change` events.
-     * @param value 
-     * @returns Promise
-     */
-    fill(value: any): Chainable
-    fill(selector: string, value: any): Chainable
-    
-    /**
-     * Selects an option by it's `text` value and triggers `input` and `change` events.
-     * @param option 
-     * @returns Promise
-     */
-    select(option: string): Chainable
-    select(selector: string, option: string): Chainable
-
-    /**
-     * Triggers a `focus` event on an element.
-     * @param selector 
-     */
-    focus(selector?: string): Chainable
-
-    /**
-     * Triggers a `blur` event on an element.
-     * @param selector 
-     */
-    blur(selector?: string): Chainable
-
-    /**
-     * Sets an element's `scrollTop` and `scrollLeft` properties and triggers a `scroll` event. The `top` 
-     * and `left` values specify how many pixels in that direction to scroll to; at least one direction 
-     * must be specified.
-     * @param param0 
-     */
-    scroll({ top, left }: ScrollOffset): Chainable
-    scroll(selector: string, { top, left }: ScrollOffset): Chainable
-
-    /**
-     * Triggers an arbitrary event, `name`, on an element with any specified event `options`. By default, 
-     * the `bubbles` and `cancelable` options are set to `true`.
-     * @param name 
-     */
-    trigger(name: string, options?: EventOptions): Chainable
-    trigger(selector: string, name: string, options?: EventOptions): Chainable
+  interface InteractorConstructor {
+    constructor(selector: string): Interactor
+    prototype: any
+    new(scope?: string): any
   }
 
-  type selector = string;
+  // type Interactors = {
+  //   [key: string]: Interactor<any>
+  // }
 
-  interface InteractorModule {
-    default: Interactor
-    
-    /**
-     * Returns the trimmed textContent property of an element.
-     * @param selector
-     */
-    text(selector?: string): (selector: string) => Interactor
-    
-    /**
-     * Returns the value property of an element.
-     * @param selector 
-     */
-    value(selector?: string): (selector: string) => Interactor
-
-    /**
-     * Returns `true` or `false` if an element is visible in the document.
-     * @param selector 
-     */
-    isVisible(selector?: string): (selector: string) => Interactor
-
-    /**
-     * Returns `true` or `false` if an element exists in the document but is visually hidden.
-     * @param selector 
-     */
-    isHidden(selector?: string): (selector: string) => Interactor
-
-    /**
-     * Returns `true` or `false` if an element can be found within the document.
-     */
-    isPresent(selector?: string): (selector: string) => Interactor
-
-    /**
-     * Returns the specified attribute of an element via `getAttribute`.
-     */
-    attribute(attr: string): (attr: string) => Interactor
-    attribute(selector: string, attr: string): (selector: string, attr: string) => Interactor
-
-    /**
-     * Returns the specified property value of an element.
-     * @param prop 
-     */
-    property(prop: string): (prop: string) => Interactor
-    property(selector: string, prop: string): (selector: string, prop: string) => Interactor
-
-    /**
-     * Returns `true` or `false` if an element's `classList` contains the specified classname.
-     * @param className 
-     */
-    hasClass(className: string): (className: string) => Interactor
-    hasClass(selector: string, className: string): (selector: string, className: string) => Interactor
-
-    /**
-     * Returns `true` or `false` if an element can be selected by the specified matching selector 
-     * via Element.matches().
-     */
-    is(match: string): (match: string) => Interactor
-    is(selector: string, match: string): (selector: string, match: string) => Interactor
-  }
-
-  const module: InteractorModule;
-
-  export = module;
+  // type Composed<T extends { [K in keyof T]: Interactor<any> }> = {
+  //   [K in keyof T]: T[K]
+  // }
 }
-
