@@ -91,7 +91,7 @@ export default function makeParentChainable(instance) {
         let { value, get } = descriptor;
 
         // do not include the constructor or non-configurable descriptors
-        if (key === 'constructor' ||
+        if (key === 'constructor' || key === '$root' ||
             descriptor.configurable === false) {
           return acc;
         }
