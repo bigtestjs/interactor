@@ -102,14 +102,6 @@ declare module '@bigtest/interactor' {
     trigger(selector: string, name: string, options?: EventOptions): Interactor;
 
     /**
-     * Creates a custom interactor class from methods and properties of an
-     * object. Methods and getters are added to the custom class's
-     * prototype and all other properties are defined during instance
-     * initialization to support custom property creators.
-     */
-    // static from(interactors: Interactors): Composed<keyof T>
-
-    /**
      * Returns `true` if the object is an interactor.
      */
     static isInteractor(obj: any): boolean;
@@ -185,9 +177,25 @@ declare module '@bigtest/interactor' {
     bubbles?: boolean;
     cancelable?: boolean;
   }
+  
+  // export function interactor<T>(constructor: Constructor<T>): InteractorConstructor<T>
+
 
   interface StaticInteractorConstructor<T> {
+    /**
+     * Similar to the `interactor` function; creates a custom interactor class
+     * from methods and properties of another class. However, this static method is
+     * available on all interactor classes, which makes any interactor extendable.
+     */
     extend<U>(constructor: Constructor<U>): InteractorConstructor<T & U>
+
+    /**
+     * Creates a custom interactor class from methods and properties of an
+     * object. Methods and getters are added to the custom class's
+     * prototype and all other properties are defined during instance
+     * initialization to support custom property creators.
+     */
+    from<T>(object: T): InteractorConstructor<T> 
   }
 
   type InteractorConstructor<T> = (new(selector?: string) => T) & StaticInteractorConstructor<T>

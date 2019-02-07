@@ -111,3 +111,21 @@ let fpe = new FlyingPersonFromExtend('.my-selector');
 
 fpe.name
 fpe.isFlying
+
+const PersonFrom = Interactor.from({
+  checked: property<boolean>('checked')
+})
+
+let pf = new PersonFrom('.my-person');
+
+pf.checked
+
+const Car = Interactor.extend(
+  class Car {
+    color = attribute('color')
+  }
+)
+
+let car = new Car('.foo');
+
+car.color
