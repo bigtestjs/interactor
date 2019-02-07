@@ -102,12 +102,6 @@ declare module '@bigtest/interactor' {
     trigger(selector: string, name: string, options?: EventOptions): Interactor;
 
     /**
-     * Create a custom interactor class from methods and properties of
-     * another class.
-     * */
-    // static extend<U>(interactors: Interactors): Composed<typeof Interactor>
-
-    /**
      * Creates a custom interactor class from methods and properties of an
      * object. Methods and getters are added to the custom class's
      * prototype and all other properties are defined during instance
@@ -124,7 +118,7 @@ declare module '@bigtest/interactor' {
   /**
    * Turn a class into an Interactor
    */
-  export function interactor<T>(constructor: T): InteractorConstructor<T>
+  export function interactor<T>(constructor: Constructor<T>): InteractorConstructor<T>
 
   /**
    * Returns the trimmed textContent property of an element.
@@ -192,16 +186,13 @@ declare module '@bigtest/interactor' {
     cancelable?: boolean;
   }
 
-  interface InteractorConstructor<T> {
-    new(selector?: string): InteractorConstructor<T>
-    prototype: T
+  interface StaticInteractorConstructor<T> {
+    extend<U>(constructor: Constructor<U>): InteractorConstructor<T & U>
   }
 
-  // type Interactors = {
-  //   [key: string]: Interactor<any>
-  // }
-
-  // type Composed<T extends { [K in keyof T]: Interactor<any> }> = {
-  //   [K in keyof T]: T[K]
-  // }
+  type InteractorConstructor<T> = (new(selector?: string) => T) & StaticInteractorConstructor<T>
+  
+  interface Constructor<T extends {} = {}> {
+    new(): T
+  }
 }
