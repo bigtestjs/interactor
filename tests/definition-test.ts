@@ -3,6 +3,7 @@ import Interactor, {
   blurrable,
   clickable,
   fillable,
+  focusable,
   hasClass,
   interactor,
   is,
@@ -10,7 +11,10 @@ import Interactor, {
   isPresent,
   isVisible,
   property,
+  scrollable,
+  selectable,
   text,
+  triggerable,
   value,
 } from "@bigtest/interactor";
 
@@ -90,6 +94,10 @@ const PersonInteractor = interactor(
     public clickThrough = clickable();
     public blurItem = blurrable();
     public fillInName = fillable(".name");
+    public focusBoo = focusable();
+    public scrollPage = scrollable(".page");
+    public selectItem = selectable(".item");
+    public triggerMouseDown = triggerable(".button");
   },
 );
 
@@ -100,7 +108,11 @@ person.isRendered;
 
 const p1 = person.clickThrough();
 const p2 = p1.blurItem();
-const p3 = p2.fillInName("");
+const p3 = p2.fillInName("something");
+const p4 = p3.focusBoo();
+const p5 = p4.scrollPage({ top: 0 });
+const p6 = p5.selectItem("Hello World");
+const p7 = p6.triggerMouseDown("mousedown", { bubbles: true });
 
 const FlyingPersonInteractor = interactor(
   class FlyingPerson extends PersonInteractor {

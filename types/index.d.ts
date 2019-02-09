@@ -202,6 +202,32 @@ declare module '@bigtest/interactor' {
    */
   export function fillable(selector?: string): (text: string) => any
 
+  /**
+   * Converges on an element first existing in the DOM, then triggers a
+   * focus event on that element.
+   */
+  export function focusable(selector?: string): () => any
+
+  /**
+   * Converges on an element first existing in the DOM, then sets the
+   * `scrollTop` and/or `scrollLeft` properties of the element, and then
+   * finally triggers a scroll event on the element.
+   */
+  export function scrollable(selector?: string): (position: ScrollOffset) => any
+
+  /**
+   * Converges on an element first existing in the DOM, then selects a
+   * matching option based on the text content, and triggers `change`
+   * and `input` events for the select element.
+   */
+  export function selectable(selector?: string): (text: string) => any
+
+  /**
+   * Converges on an element first existing in the DOM, then triggers a
+   * specified event with optional event init options.
+   */
+  export function triggerable(selector?: string): (eventName: string, options: EventOptions) => any
+
   interface ScrollOffset {
     top?: number;
     left?: number;
