@@ -1,45 +1,49 @@
 import Interactor, {
-  text,
-  value,
-  isVisible,
+  attribute,
+  blurrable,
+  clickable,
+  fillable,
+  hasClass,
+  interactor,
+  is,
   isHidden,
   isPresent,
-  attribute,
+  isVisible,
   property,
-  hasClass,
-  is,
-  interactor,
-  clickable
-} from '@bigtest/interactor';
+  text,
+  value,
+} from "@bigtest/interactor";
+
+/* tslint:disable no-unused-expression */
 
 text();
-text('.hello-world');
+text(".hello-world");
 
 value();
-value('.hello-world');
+value(".hello-world");
 
 isVisible();
-isVisible('./hello-world');
+isVisible("./hello-world");
 
 isHidden();
-isHidden('./hello-world');
+isHidden("./hello-world");
 
 isPresent();
-isPresent('./hello-world');
+isPresent("./hello-world");
 
-attribute('name');
-attribute('.hello-world', 'name');
+attribute("name");
+attribute(".hello-world", "name");
 
-property('name');
-property('.hello-world', 'name');
+property("name");
+property(".hello-world", "name");
 
-hasClass('foo');
-hasClass('.hello-world', 'foo');
+hasClass("foo");
+hasClass(".hello-world", "foo");
 
-is('div');
-is('.hello-world', 'span');
+is("div");
+is(".hello-world", "span");
 
-let i = new Interactor();
+const i = new Interactor();
 i.text;
 i.value;
 i.isVisible;
@@ -50,89 +54,90 @@ i.click().then();
 i.click()
   .click()
   .then();
-i.click('.hello-world').then();
-i.fill('say hi').then();
-i.fill('say hi')
+i.click(".hello-world").then();
+i.fill("say hi").then();
+i.fill("say hi")
   .click()
   .then();
-i.fill('.hello-world', 'say hi').then();
-i.select('winning').then();
-i.select('.hello-world', 'winning').then();
-i.select('.hello-world')
-  .fill('bob')
+i.fill(".hello-world", "say hi").then();
+i.select("winning").then();
+i.select(".hello-world", "winning").then();
+i.select(".hello-world")
+  .fill("bob")
   .then();
 i.focus()
   .click()
   .then();
-i.focus('.hello-world').then();
-i.blur('.hello-world').then();
-i.blur('.hello-world')
+i.focus(".hello-world").then();
+i.blur(".hello-world").then();
+i.blur(".hello-world")
   .click()
-  .fill('bob')
+  .fill("bob")
   .then();
 i.scroll({ top: 10, left: 20 }).then();
 i.scroll({ top: 10 }).then();
 i.scroll({ left: 20 }).then();
 i.scroll({ top: 20 })
   .click()
-  .fill('hello')
+  .fill("hello")
   .then();
-i.scroll('.hello-world', { left: 20 }).then();
+i.scroll(".hello-world", { left: 20 }).then();
 
-const Person = interactor(
+const PersonInteractor = interactor(
   class Person {
-    name = attribute('name');
-    isRendered = isVisible();
-    clickThrough = clickable();
-  }
+    public name = attribute("name");
+    public isRendered = isVisible();
+    public clickThrough = clickable();
+    public blurItem = blurrable();
+    public fillInName = fillable(".name");
+  },
 );
 
-let person = new Person('.person-on-left');
+const person = new PersonInteractor(".person-on-left");
 
 person.name;
 person.isRendered;
 
-let p1 = person.clickThrough()
-let p2 = p1.clickThrough()
+const p1 = person.clickThrough();
+const p2 = p1.blurItem();
+const p3 = p2.fillInName("");
 
-p2.then();
-
-let FlyingPerson = interactor(
-  class FlyingPerson extends Person {
-    isFlying = hasClass('.is-flying');
-  }
+const FlyingPersonInteractor = interactor(
+  class FlyingPerson extends PersonInteractor {
+    public isFlying = hasClass(".is-flying");
+  },
 );
 
-let fp = new FlyingPerson();
+const fp = new FlyingPersonInteractor();
 
 fp.isFlying;
 fp.name;
 
-let FlyingPersonFromExtend = Person.extend(
+const FlyingPersonFromExtend = PersonInteractor.extend(
   class AddFlying {
-    isFlying = hasClass('.is-flying');
-  }
+    public isFlying = hasClass(".is-flying");
+  },
 );
 
-let fpe = new FlyingPersonFromExtend('.my-selector');
+const fpe = new FlyingPersonFromExtend(".my-selector");
 
 fpe.name;
 fpe.isFlying;
 
 const PersonFrom = Interactor.from({
-  checked: property<boolean>('checked')
+  checked: property<boolean>("checked"),
 });
 
-let pf = new PersonFrom('.my-person');
+const pf = new PersonFrom(".my-person");
 
 pf.checked;
 
-const Car = Interactor.extend(
+const CarInteractor = Interactor.extend(
   class Car {
-    color = attribute('color');
-  }
+    public color = attribute("color");
+  },
 );
 
-let car = new Car('.foo');
+const car = new CarInteractor(".foo");
 
 car.color;

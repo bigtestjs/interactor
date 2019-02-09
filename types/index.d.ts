@@ -184,9 +184,23 @@ declare module '@bigtest/interactor' {
   export function is(selector: string, match: string): boolean;
 
   /**
-   * Triggers a click event on an element.
+   * Converges on an element first existing in the DOM, then triggers a
+   * click on that element.
    */
-  export function clickable(selector?: string): Function;
+  export function clickable(selector?: string): () => any;
+
+  /**
+   * Converges on an element first existing in the DOM, then triggers a
+   * blur event on that element.
+   */
+  export function blurrable(selector?: string): () => any
+
+  /**
+   * Converges on an element first existing in the DOM, then sets its
+   * `value` property to the passed value, and triggers both `input` and
+   * `change` events for the element.
+   */
+  export function fillable(selector?: string): (text: string) => any
 
   interface ScrollOffset {
     top?: number;
@@ -207,7 +221,7 @@ declare module '@bigtest/interactor' {
     extend<U>(constructor: Constructor<U>): InteractorConstructor<T & U>;
   }
 
-  type Chainable<T> = { [K in keyof T]: T[K] extends Function ? () => Chainable<T> & Convergence : T[K] };
+  type Chainable<T> = { [K in keyof T]: T[K] extends (...args: infer U) => infer R ? (...args: U) => Chainable<T> & Convergence : T[K] };
 
   type InteractorConstructor<T> = (new (selector?: string) => InteractorConstructor<T>) &
     StaticInteractorConstructor<T> &
