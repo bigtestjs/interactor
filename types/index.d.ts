@@ -105,12 +105,27 @@ declare module '@bigtest/interactor' {
      * Returns `true` if the object is an interactor.
      */
     static isInteractor(obj: any): boolean;
+
+    /**
+     * Creates a custom interactor class from methods and properties of an
+     * object. Methods and getters are added to the custom class's
+     * prototype and all other properties are defined during instance
+     * initialization to support custom property creators.
+     */
+    static from<T>(object: T): InteractorConstructor<T>;
+
+    /**
+     * Similar to the `interactor` function; creates a custom interactor class
+     * from methods and properties of another class. However, this static method is
+     * available on all interactor classes, which makes any interactor extendable.
+     */
+    static extend<T>(constructor: Constructor<T>): InteractorConstructor<T>;
   }
 
   /**
    * Turn a class into an Interactor
    */
-  export function interactor<T>(constructor: Constructor<T>): InteractorConstructor<T>
+  export function interactor<T>(constructor: Constructor<T>): InteractorConstructor<T>;
 
   /**
    * Returns the trimmed textContent property of an element.
@@ -168,6 +183,11 @@ declare module '@bigtest/interactor' {
   export function is(match: string): boolean;
   export function is(selector: string, match: string): boolean;
 
+  /**
+   * Triggers a click event on an element.
+   */
+  export function clickable(selector?: string): Function;
+
   interface ScrollOffset {
     top?: number;
     left?: number;
@@ -177,9 +197,6 @@ declare module '@bigtest/interactor' {
     bubbles?: boolean;
     cancelable?: boolean;
   }
-  
-  // export function interactor<T>(constructor: Constructor<T>): InteractorConstructor<T>
-
 
   interface StaticInteractorConstructor<T> {
     /**
@@ -187,20 +204,16 @@ declare module '@bigtest/interactor' {
      * from methods and properties of another class. However, this static method is
      * available on all interactor classes, which makes any interactor extendable.
      */
-    extend<U>(constructor: Constructor<U>): InteractorConstructor<T & U>
-
-    /**
-     * Creates a custom interactor class from methods and properties of an
-     * object. Methods and getters are added to the custom class's
-     * prototype and all other properties are defined during instance
-     * initialization to support custom property creators.
-     */
-    from<T>(object: T): InteractorConstructor<T> 
+    extend<U>(constructor: Constructor<U>): InteractorConstructor<T & U>;
   }
 
-  type InteractorConstructor<T> = (new(selector?: string) => T) & StaticInteractorConstructor<T>
-  
+  type Chainable<T> = { [K in keyof T]: T[K] extends Function ? () => Chainable<T> & Convergence : T[K] };
+
+  type InteractorConstructor<T> = (new (selector?: string) => InteractorConstructor<T>) &
+    StaticInteractorConstructor<T> &
+    Chainable<T>;
+
   interface Constructor<T extends {} = {}> {
-    new(): T
+    new (): T;
   }
 }

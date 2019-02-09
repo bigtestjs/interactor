@@ -8,7 +8,8 @@ import Interactor, {
   property,
   hasClass,
   is,
-  interactor
+  interactor,
+  clickable
 } from '@bigtest/interactor';
 
 text();
@@ -82,6 +83,7 @@ const Person = interactor(
   class Person {
     name = attribute('name');
     isRendered = isVisible();
+    clickThrough = clickable();
   }
 );
 
@@ -90,42 +92,47 @@ let person = new Person('.person-on-left');
 person.name;
 person.isRendered;
 
+let p1 = person.clickThrough()
+let p2 = p1.clickThrough()
+
+p2.then();
+
 let FlyingPerson = interactor(
   class FlyingPerson extends Person {
-    isFlying = hasClass('.is-flying')
+    isFlying = hasClass('.is-flying');
   }
-)
+);
 
 let fp = new FlyingPerson();
 
-fp.isFlying
-fp.name
+fp.isFlying;
+fp.name;
 
 let FlyingPersonFromExtend = Person.extend(
   class AddFlying {
-    isFlying = hasClass('.is-flying')
+    isFlying = hasClass('.is-flying');
   }
-)
+);
 
 let fpe = new FlyingPersonFromExtend('.my-selector');
 
-fpe.name
-fpe.isFlying
+fpe.name;
+fpe.isFlying;
 
 const PersonFrom = Interactor.from({
   checked: property<boolean>('checked')
-})
+});
 
 let pf = new PersonFrom('.my-person');
 
-pf.checked
+pf.checked;
 
 const Car = Interactor.extend(
   class Car {
-    color = attribute('color')
+    color = attribute('color');
   }
-)
+);
 
 let car = new Car('.foo');
 
-car.color
+car.color;
