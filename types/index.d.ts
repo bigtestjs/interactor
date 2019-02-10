@@ -235,6 +235,13 @@ declare module '@bigtest/interactor' {
    */
   export function count(selector?: string): number
 
+  /**
+   * Converges on the scope existing in DOM, then returns an instance of
+   * this interactor which will converge with an array of elements
+   * matching the provided selector.
+   */
+  export function findAll(selector?: string): Element[]
+
   interface ScrollOffset {
     top?: number;
     left?: number;

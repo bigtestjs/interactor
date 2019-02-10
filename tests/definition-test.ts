@@ -2,7 +2,9 @@ import Interactor, {
   attribute,
   blurrable,
   clickable,
+  count,
   fillable,
+  findAll,
   focusable,
   hasClass,
   interactor,
@@ -16,7 +18,6 @@ import Interactor, {
   text,
   triggerable,
   value,
-  count
 } from "@bigtest/interactor";
 
 /* tslint:disable no-unused-expression */
@@ -100,6 +101,7 @@ const PersonInteractor = interactor(
     public selectItem = selectable(".item");
     public triggerMouseDown = triggerable(".button");
     public friendsCount = count("friends");
+    public cards = findAll(".card");
   },
 );
 
@@ -108,6 +110,7 @@ const person = new PersonInteractor(".person-on-left");
 person.name;
 person.isRendered;
 person.friendsCount;
+person.cards.pop();
 
 const p1 = person.clickThrough();
 const p2 = p1.blurItem();
@@ -115,7 +118,7 @@ const p3 = p2.fillInName("something");
 const p4 = p3.focusBoo();
 const p5 = p4.scrollPage({ top: 0 });
 const p6 = p5.selectItem("Hello World");
-const p7 = p6.triggerMouseDown("mousedown", { bubbles: true });
+p6.triggerMouseDown("mousedown", { bubbles: true });
 
 const FlyingPersonInteractor = interactor(
   class FlyingPerson extends PersonInteractor {
