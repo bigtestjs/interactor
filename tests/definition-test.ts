@@ -4,6 +4,7 @@ import Interactor, {
   clickable,
   count,
   fillable,
+  find,
   findAll,
   focusable,
   hasClass,
@@ -13,6 +14,7 @@ import Interactor, {
   isPresent,
   isVisible,
   property,
+  scoped,
   scrollable,
   selectable,
   text,
@@ -102,6 +104,7 @@ const PersonInteractor = interactor(
     public triggerMouseDown = triggerable(".button");
     public friendsCount = count("friends");
     public cards = findAll(".card");
+    public tom = find(".tom");
   },
 );
 
@@ -111,6 +114,7 @@ person.name;
 person.isRendered;
 person.friendsCount;
 person.cards.pop();
+person.tom ? person.tom.innerHTML : null;
 
 const p1 = person.clickThrough();
 const p2 = p1.blurItem();
@@ -119,6 +123,28 @@ const p4 = p3.focusBoo();
 const p5 = p4.scrollPage({ top: 0 });
 const p6 = p5.selectItem("Hello World");
 p6.triggerMouseDown("mousedown", { bubbles: true });
+
+const ChildInteractor = interactor(
+  class Child {
+    public father = scoped(".father", PersonInteractor);
+  },
+);
+
+const child = new ChildInteractor(".child");
+
+child.father.name;
+
+const OwnedCarInteractor = interactor(
+  class OwnedCar {
+    public owner = scoped(".owner", {
+      color: attribute("color"),
+    });
+  },
+);
+
+const ownedCar = new OwnedCarInteractor(".owned-car");
+
+ownedCar.owner.color;
 
 const FlyingPersonInteractor = interactor(
   class FlyingPerson extends PersonInteractor {

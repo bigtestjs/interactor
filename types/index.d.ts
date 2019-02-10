@@ -240,7 +240,19 @@ declare module '@bigtest/interactor' {
    * this interactor which will converge with an array of elements
    * matching the provided selector.
    */
-  export function findAll(selector?: string): Element[]
+  export function findAll(selector?: string): HTMLElement[]
+
+  /**
+   * Converges on an element existing in the DOM.
+   */
+  export function find(select?: string): HTMLElement | undefined
+
+  /**
+   * Returns a nested interactor scoped to the selector within the
+   * current interactor's scope.
+   */
+  export function scoped<T>(selector: string, properties: Constructor<T>): InteractorConstructor<T>
+  export function scoped<T>(selector: string, properties: T): InteractorConstructor<T>
 
   interface ScrollOffset {
     top?: number;
