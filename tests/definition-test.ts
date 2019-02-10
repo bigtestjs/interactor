@@ -16,6 +16,7 @@ import Interactor, {
   text,
   triggerable,
   value,
+  count
 } from "@bigtest/interactor";
 
 /* tslint:disable no-unused-expression */
@@ -98,6 +99,7 @@ const PersonInteractor = interactor(
     public scrollPage = scrollable(".page");
     public selectItem = selectable(".item");
     public triggerMouseDown = triggerable(".button");
+    public friendsCount = count("friends");
   },
 );
 
@@ -105,6 +107,7 @@ const person = new PersonInteractor(".person-on-left");
 
 person.name;
 person.isRendered;
+person.friendsCount;
 
 const p1 = person.clickThrough();
 const p2 = p1.blurItem();

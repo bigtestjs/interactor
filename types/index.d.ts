@@ -228,6 +228,13 @@ declare module '@bigtest/interactor' {
    */
   export function triggerable(selector?: string): (eventName: string, options: EventOptions) => any
 
+  /**
+   * Property creator for returning the number of elements found via a
+   * query selector. Will throw an error if the interactor scope cannot
+   * be found.
+   */
+  export function count(selector?: string): number
+
   interface ScrollOffset {
     top?: number;
     left?: number;
