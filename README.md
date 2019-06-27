@@ -211,6 +211,7 @@ describe('Logging in', () => {
 - `isVisible(selector)`
 - `isHidden(selector)`
 - `isPresent(selector)`
+- `isFocused(selector)`
 - `is(selector, match)`
 - `hasClass(selector)`
 

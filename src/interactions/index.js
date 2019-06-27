@@ -22,6 +22,7 @@ export { default as is } from './is';
 export { default as isVisible } from './is-visible';
 export { default as isHidden } from './is-hidden';
 export { default as isPresent } from './is-present';
+export { default as isFocused } from './is-focused';
 
 // interaction helpers
 export { computed, action } from './helpers';
