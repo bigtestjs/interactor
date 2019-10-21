@@ -42,22 +42,6 @@ jobs:
           name: Lint package
           command: yarn lint
 
-  build:
-    <<: *defaults
-    steps:
-      - *attach_workspace
-      - run:
-          name: Build documentation
-          command: yarn docs
-      - run:
-          name: Build package
-          command: yarn build
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - interactor/dist
-            - interactor/docs
-
   test:
     <<: *defaults
     steps:
@@ -65,19 +49,6 @@ jobs:
       - run:
           name: Run tests
           command: yarn test --browser chrome
-
-  deploy:
-    <<: *defaults
-    steps:
-      - *attach_workspace
-      - run:
-          name: Publish to NPM
-          command: |
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            npx bigtest-release --access=public
-      - run:
-          name: Push Tags
-          command: git push --tags
 
 workflows:
   version: 2
@@ -87,17 +58,6 @@ workflows:
       - lint:
           requires:
             - install
-      - build:
-          requires:
-            - install
       - test:
           requires:
             - install
-      - deploy:
-          requires:
-            - lint
-            - build
-            - test
-          filters:
-            branches:
-              only: master

@@ -15,9 +15,9 @@
     "build": "rollup --config",
     "docs": "bigtest-docs",
     "lint": "eslint --ignore-path .gitignore ./",
-    "postpublish": "bigtest-tag-version",
     "start": "bigtest run --opts tests/bigtest.opts",
-    "test": "yarn start --once"
+    "test": "yarn start --once",
+    "prepack": "npm run docs && npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
