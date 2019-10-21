@@ -5,11 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+- Add isFocused getter
+
 ## [0.9.2] - 2018-02-05
 
 ### Fixed
 
-- Make sure $root descriptor function is not wrapped in the chaining mechanism - https://github.com/bigtestjs/interactor/pull/60 
+- Make sure $root descriptor function is not wrapped in the chaining mechanism - https://github.com/bigtestjs/interactor/pull/60
 
 ## [0.9.1] - 2018-10-23
 
